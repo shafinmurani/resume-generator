@@ -1,5 +1,6 @@
 import { Typography, TextField, Button, Divider } from "@mui/material";
 import React from "react";
+import { Link } from "react-router-dom";
 export default function Form() {
   function submit() {
     console.log(name);
@@ -9,6 +10,7 @@ export default function Form() {
     console.log(dateOfJoin);
     console.log(dateOfLeave);
   }
+
   const [name, setName] = React.useState("");
   const [designation, setDesignation] = React.useState("");
   const [experience, setExperience] = React.useState([]);
@@ -16,11 +18,13 @@ export default function Form() {
   const [jMonth, setJMonth] = React.useState("");
   const [jYear, setJYear] = React.useState("");
   const [dateOfJoin, setDateOfJoin] = React.useState("");
-
+  const [achievements, setAchievements] = React.useState([]);
   const [lMonth, setLMonth] = React.useState("");
   const [lYear, setLYear] = React.useState("");
   const [dateOfLeave, setDateOfLeave] = React.useState("");
   const [itter, setItter] = React.useState(1);
+  const [phone, setPhone] = React.useState("");
+  const [email, setEmail] = React.useState("");
   return (
     <div
       style={{
@@ -44,6 +48,22 @@ export default function Form() {
         color="secondary"
       />
       <TextField
+        onChange={(e) => {
+          setEmail(e.target.value);
+        }}
+        fullWidth
+        label="Email"
+        color="secondary"
+      />
+      <TextField
+        onChange={(e) => {
+          setPhone(e.target.value);
+        }}
+        fullWidth
+        label="Phone"
+        color="secondary"
+      />
+      <TextField
         fullWidth
         onChange={(e) => {
           setDesignation(e.target.value);
@@ -64,7 +84,7 @@ export default function Form() {
       />
       <Divider />
       <Typography variant="h6" style={{ textAlign: "center" }}>
-        Work Information
+        Work Experience
       </Typography>
 
       {experience.map((val, key) => {
@@ -137,7 +157,7 @@ export default function Form() {
             <div style={{ display: "flex", flex: 1, columnGap: "1rem" }}>
               <TextField
                 color="secondary"
-                label="Month of Leave"
+                label="Month of Leave(leave blank for present)"
                 fullWidth
                 defaultValue={val.joinDate}
                 onChange={(e) => {
@@ -148,7 +168,7 @@ export default function Form() {
               <TextField
                 fullWidth
                 color="secondary"
-                label="Year of Leave"
+                label="Year of Leave(leave blank for present)"
                 // type="number"
                 defaultValue={val.joinDate}
                 onChange={(e) => {
@@ -171,7 +191,7 @@ export default function Form() {
       })}
       <Button
         style={{ alignSelf: "flex-start" }}
-        variant="outlined"
+        variant="contained"
         color="secondary"
         onClick={() => {
           setExperience((experience) => [
@@ -182,21 +202,104 @@ export default function Form() {
               post: "",
               info: "",
               joinDate: "",
-              exitDate: "",
+              exitDate: "Present",
             },
           ]);
-          console.log(experience);
+          // console.log(experience);
         }}
       >
         Add Experience
       </Button>
+      <Divider />
+      <div>
+        <Typography
+          variant="h6"
+          style={{ textAlign: "center", marginBottom: "1rem" }}
+        >
+          Achievements
+        </Typography>
+
+        {achievements.map((val, key) => {
+          return (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                rowGap: "1rem",
+              }}
+              key={key}
+            >
+              <TextField
+                fullWidth
+                color="secondary"
+                label="Title"
+                // type="number"
+                defaultValue={val.name}
+                onChange={(e) => {
+                  val.name = e.target.value;
+                }}
+              />
+              <TextField
+                fullWidth
+                color="secondary"
+                rows={5}
+                maxRows={5}
+                multiline
+                label="Info"
+                // type="number"
+                defaultValue={val.info}
+                onChange={(e) => {
+                  val.info = e.target.value;
+                }}
+              />
+
+              <Divider style={{ marginTop: "1rem", marginBottom: "1rem" }} />
+            </div>
+          );
+        })}
+        <Button
+          style={{ alignSelf: "flex-start" }}
+          variant="contained"
+          color="secondary"
+          onClick={() => {
+            setAchievements((achievements) => [
+              ...achievements,
+              {
+                id: achievements.length,
+                name: "",
+                info: "",
+              },
+            ]);
+            console.log(experience);
+          }}
+        >
+          Add Achievements
+        </Button>
+      </div>
       <Button
+        onClick={() => {
+          localStorage.setItem("achieve", JSON.stringify(achievements));
+        }}
         variant="contained"
         color="secondary"
         style={{ alignSelf: "flex-end", marginBottom: "2rem" }}
-        onClick={() => {
-          submit();
-        }}
+        component={Link}
+        to={
+          "/resume?name=" +
+          name +
+          "&desig=" +
+          designation +
+          "&about=" +
+          about +
+          "&experience=" +
+          JSON.stringify(experience) +
+          "&achieve=" +
+          JSON.stringify(achievements) +
+          "&phone=" +
+          phone +
+          "&email=" +
+          email
+        }
       >
         Next
       </Button>
