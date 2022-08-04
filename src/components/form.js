@@ -1,0 +1,205 @@
+import { Typography, TextField, Button, Divider } from "@mui/material";
+import React from "react";
+export default function Form() {
+  function submit() {
+    console.log(name);
+    console.log(designation);
+    console.log(about);
+    console.log(experience);
+    console.log(dateOfJoin);
+    console.log(dateOfLeave);
+  }
+  const [name, setName] = React.useState("");
+  const [designation, setDesignation] = React.useState("");
+  const [experience, setExperience] = React.useState([]);
+  const [about, setAbout] = React.useState("");
+  const [jMonth, setJMonth] = React.useState("");
+  const [jYear, setJYear] = React.useState("");
+  const [dateOfJoin, setDateOfJoin] = React.useState("");
+
+  const [lMonth, setLMonth] = React.useState("");
+  const [lYear, setLYear] = React.useState("");
+  const [dateOfLeave, setDateOfLeave] = React.useState("");
+  const [itter, setItter] = React.useState(1);
+  return (
+    <div
+      style={{
+        marginTop: "1rem",
+        width: "80%",
+        marginInline: "auto",
+        display: "flex",
+        flexDirection: "column",
+        rowGap: "1rem",
+      }}
+    >
+      <Typography variant="h6" style={{ textAlign: "center" }}>
+        About You
+      </Typography>
+      <TextField
+        onChange={(e) => {
+          setName(e.target.value);
+        }}
+        fullWidth
+        label="Name"
+        color="secondary"
+      />
+      <TextField
+        fullWidth
+        onChange={(e) => {
+          setDesignation(e.target.value);
+        }}
+        label="Designation"
+        color="secondary"
+      />
+      <TextField
+        fullWidth
+        onChange={(e) => {
+          setAbout(e.target.value);
+        }}
+        multiline
+        maxRows={6}
+        minRows={2}
+        label="About"
+        color="secondary"
+      />
+      <Divider />
+      <Typography variant="h6" style={{ textAlign: "center" }}>
+        Work Information
+      </Typography>
+
+      {experience.map((val, key) => {
+        return (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              rowGap: "1rem",
+            }}
+            key={key}
+          >
+            <TextField
+              color="secondary"
+              label="Company"
+              defaultValue={val.company}
+              onChange={(e) => {
+                val.company = e.target.value;
+              }}
+            />
+            <TextField
+              color="secondary"
+              label="Post"
+              defaultValue={val.post}
+              onChange={(e) => {
+                val.post = e.target.value;
+              }}
+            />
+            <TextField
+              color="secondary"
+              label="Information"
+              multiline
+              maxRows={5}
+              defaultValue={val.info}
+              onChange={(e) => {
+                val.info = e.target.value;
+              }}
+            />
+            <div style={{ display: "flex", flex: 1, columnGap: "1rem" }}>
+              <TextField
+                color="secondary"
+                label="Month of joining"
+                fullWidth
+                defaultValue={val.joinDate}
+                onChange={(e) => {
+                  setJMonth(e.target.value);
+                  val.joinDate = e.target.value + " " + jYear;
+                }}
+              />
+              <TextField
+                fullWidth
+                color="secondary"
+                label="Year of Joining"
+                // type="number"
+                defaultValue={val.joinDate}
+                onChange={(e) => {
+                  setJYear(e.target.value);
+                  val.joinDate = jMonth + " " + e.target.value;
+                }}
+              />
+              <TextField
+                fullWidth
+                color="secondary"
+                label="Date of Joining"
+                // type="number"
+                disabled
+                value={val.joinDate}
+              />
+            </div>
+            <div style={{ display: "flex", flex: 1, columnGap: "1rem" }}>
+              <TextField
+                color="secondary"
+                label="Month of Leave"
+                fullWidth
+                defaultValue={val.joinDate}
+                onChange={(e) => {
+                  setLMonth(e.target.value);
+                  val.exitDate = e.target.value + " " + lYear;
+                }}
+              />
+              <TextField
+                fullWidth
+                color="secondary"
+                label="Year of Leave"
+                // type="number"
+                defaultValue={val.joinDate}
+                onChange={(e) => {
+                  setLYear(e.target.value);
+                  val.exitDate = lMonth + " " + e.target.value;
+                }}
+              />
+              <TextField
+                fullWidth
+                color="secondary"
+                label="Date of Leaving"
+                // type="number"
+                disabled
+                value={val.exitDate}
+              />
+            </div>
+            <Divider />
+          </div>
+        );
+      })}
+      <Button
+        style={{ alignSelf: "flex-start" }}
+        variant="outlined"
+        color="secondary"
+        onClick={() => {
+          setExperience((experience) => [
+            ...experience,
+            {
+              id: experience.length,
+              company: "",
+              post: "",
+              info: "",
+              joinDate: "",
+              exitDate: "",
+            },
+          ]);
+          console.log(experience);
+        }}
+      >
+        Add Experience
+      </Button>
+      <Button
+        variant="contained"
+        color="secondary"
+        style={{ alignSelf: "flex-end", marginBottom: "2rem" }}
+        onClick={() => {
+          submit();
+        }}
+      >
+        Next
+      </Button>
+    </div>
+  );
+}
